@@ -101,7 +101,7 @@ public class JavaFXApplication4 extends Application {
                    
                 } 
                 
-                // fem una prova per mostrar  classes per grups i canviar la SuperMatriu
+                // fem una prova per mostrar  classes per grups i canviar la SuperMatriu d'acord
                 for ( int c = 0; c < grups.length; c++)
                 {
                   System.out.print("\n grup: " + grups[c]);    
