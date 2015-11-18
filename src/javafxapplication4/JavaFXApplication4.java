@@ -29,6 +29,7 @@ public class JavaFXApplication4 extends Application {
     final int HORA = 20;
     int i = 0;
     int cont_h_grup = 0;
+    int cont_h_profe = 0;
     int enteroDIA = 0;
     int enteroHORA = 0;
     String valor;
@@ -39,7 +40,14 @@ public class JavaFXApplication4 extends Application {
                         "E4A","E4B","E4C","E4D",
                         "B1A","B1B","B2A","B2B",
                         "CFA","CFB","CFC"};
+    String profes[] = {"AN1","AN2","AN3","AN4",
+                        "ES1","ES2","ES3","ES4",
+                        "CA1","CA2","CA3","CA4",
+                        "MA1","MA2","MA3","MA4",
+                        "TE1","TE2","TE3","TE4",
+                        "HI1","HI2","HI3","HI4"};
    char SuperMatriu [][][] = new char[grups.length][DIES][HORA];
+   char SuperMatriuProfes [][][] = new char[profes.length][DIES][HORA];
     
     public String sensecometes(String ambcometes) {
         
@@ -101,7 +109,7 @@ public class JavaFXApplication4 extends Application {
                    
                 } 
                 
-                // fem una prova per mostrar  classes per grups i canviar la SuperMatriu d'acord
+                // fem una prova per mostrar  classes per grups i canviar la SuperMatriu
                 for ( int c = 0; c < grups.length; c++)
                 {
                   System.out.print("\n grup: " + grups[c]);    
@@ -129,8 +137,8 @@ public class JavaFXApplication4 extends Application {
                     System.out.print("\n Total hores setmanals del grup: " + cont_h_grup);
                 }
                 
-                // Ara imprimim els horaris
-                // 
+                // Ara imprimim els horaris de grups
+                 
                 for ( int j = 0; j < grups.length; j++)
                 {
                    System.out.print("\n horari de grup: " + grups[j]);
@@ -146,8 +154,51 @@ public class JavaFXApplication4 extends Application {
                    
                 } 
                  
-            
+                // fem una prova per mostrar  classes per grups i canviar la SuperMatriuProfes
+                for ( int c = 0; c < profes.length; c++)
+                {
+                  System.out.print("\n profe: " + profes[c]);    
+                  cont_h_profe = 0;
+                  
+                    for ( int p = 0; p < matriu.length; p++)
+                    {
+                        if (profes[c].equals(matriu [p]))
+                        {
+                            System.out.print("\n grup: " + matriu [p] + 
+                                    " profe: " + matriu [(p)] +
+                                    " mater: " + matriu [(p+1)] +
+                                    " aula: " + matriu [(p+2)] +
+                                    " dia: " + matriu [(p+3)] +
+                                    " hora: " + matriu [(p+4)] );
+                            
+                            cont_h_profe ++; // per veure el total de classe per al grup
+                            //String enteroString = "5";
+                            enteroDIA = Integer.parseInt((matriu [(p+3)]));
+                            enteroHORA = Integer.parseInt((matriu [(p+4)]));
+                            System.out.print("\n | " + enteroDIA + " | " + enteroHORA);
+                            SuperMatriuProfes[c][enteroDIA-1][enteroHORA-1] = 'X'; // Marco que està ocupat
+                        }
+                    }
+                    System.out.print("\n Total hores setmanals del profe: " + cont_h_profe);
+                }
         
+                // Ara imprimim els horaris de profes
+                 
+                for ( int j = 0; j < profes.length; j++)
+                {
+                   System.out.print("\n horari de profe: " + profes[j]);
+                   System.out.print(" \n ========================================= ");
+                    for ( int m = 0; m < HORA; m++)
+                    {
+                        System.out.print("\n");
+                        for ( int k = 0; k < DIES; k++)
+                        {
+                            System.out.print(SuperMatriuProfes[j][k][m]);
+                        }
+                    }
+                   
+                } 
+                
             }
         });
         
