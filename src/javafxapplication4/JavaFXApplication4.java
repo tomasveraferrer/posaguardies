@@ -46,8 +46,8 @@ public class JavaFXApplication4 extends Application {
                         "MA1","MA2","MA3","MA4",
                         "TE1","TE2","TE3","TE4",
                         "HI1","HI2","HI3","HI4"};
-   char SuperMatriu [][][] = new char[grups.length][DIES][HORA];
-   char SuperMatriuProfes [][][] = new char[profes.length][DIES][HORA];
+    char SuperMatriu [][][] = new char[grups.length][DIES][HORA];
+    char SuperMatriuProfes [][][] = new char[profes.length][DIES][HORA];
     
     public String sensecometes(String ambcometes) {
         
@@ -56,6 +56,40 @@ public class JavaFXApplication4 extends Application {
         sensecometes = ambcometes.replace("\"", "");
     //    }
         return sensecometes;
+    }
+    
+    class Professor {
+        
+        int hores_guardia = 4;
+        int hores_lectives = 20;
+        String codi = "";
+        String nom = "";
+        String cognom1 = "";
+        String cognom2 = "";   
+        
+        //Constructor simpple
+        Professor(String c){
+            this.codi = c;
+        }
+        //Constructor complet
+        Professor(String c, String n, String c1, String c2, int hg, int hl){
+            this.codi = c;
+            this.nom = n;
+            this.cognom1 = c1;
+            this.cognom2 = c2;
+            this.hores_guardia = hg;
+            this.hores_lectives = hl;
+        }
+        //Calculem els forats del professor
+        public Boolean calculaforats() {
+        
+        return true;
+        }
+        //Omple els forats
+        public Boolean ompleforats() {
+        
+        return true;
+        }
     }
     
     @Override
