@@ -7,15 +7,19 @@ package javafxapplication4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
@@ -49,15 +53,17 @@ public class JavaFXApplication4 extends Application {
     char SuperMatriu [][][] = new char[grups.length][DIES][HORA];
     char SuperMatriuProfes [][][] = new char[profes.length][DIES][HORA];
     
+    // Funció per treure els símbols "
     public String sensecometes(String ambcometes) {
         
         String sensecometes = "";
-    //    if (ambcometes.length() > 0){
+    
         sensecometes = ambcometes.replace("\"", "");
-    //    }
+    
         return sensecometes;
     }
     
+    // Classe professor
     class Professor {
         
         int hores_guardia = 4;
@@ -65,13 +71,14 @@ public class JavaFXApplication4 extends Application {
         String codi = "";
         String nom = "";
         String cognom1 = "";
-        String cognom2 = "";   
+        String cognom2 = "";
+        char horari [][] = new char [DIES][HORA];
         
-        //Constructor simpple
+        //Constructor simple
         Professor(String c){
             this.codi = c;
         }
-        //Constructor complet
+        //Constructor multi
         Professor(String c, String n, String c1, String c2, int hg, int hl){
             this.codi = c;
             this.nom = n;
@@ -81,8 +88,23 @@ public class JavaFXApplication4 extends Application {
             this.hores_lectives = hl;
         }
         //Calculem els forats del professor
-        public Boolean calculaforats() {
+        public Boolean creahorariprofe() {
         
+            for ( int j = 0; j < profes.length; j++)
+                {
+                  if (profes[j].equals(this.codi)){ 
+                   
+                    for ( int m = 0; m < HORA; m++)
+                    {
+                        
+                        for ( int k = 0; k < DIES; k++)
+                        {
+                            this.horari[k][m] = SuperMatriuProfes[j][k][m];
+                        }
+                    }
+                  } 
+                } 
+            
         return true;
         }
         //Omple els forats
@@ -90,6 +112,13 @@ public class JavaFXApplication4 extends Application {
         
         return true;
         }
+        
+        //Calculem els forats del professor
+        public Boolean calculaforats() {
+        
+        return true;
+        }
+        
     }
     
     @Override
@@ -220,6 +249,7 @@ public class JavaFXApplication4 extends Application {
                  
                 for ( int j = 0; j < profes.length; j++)
                 {
+                   
                    System.out.print("\n horari de profe: " + profes[j]);
                    System.out.print(" \n ========================================= ");
                     for ( int m = 0; m < HORA; m++)
@@ -236,12 +266,44 @@ public class JavaFXApplication4 extends Application {
             }
         });
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        Button btn2 = new Button();
+        btn2.setText("creo horari");
+        
+        FlowPane root = new FlowPane(10,10);
+        
+        root.getChildren().addAll(btn,btn2);
+        root.setAlignment(Pos.CENTER);
+        
+        btn2.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                //creo un hashmap o alguna cosa similar
+                Map<String, Professor> map = new HashMap<>();
+                //creo profes
+                Professor profe1 = new Professor("TE4");
+                profe1.creahorariprofe();
+                map.put("TE4",profe1);	
+                
+                Professor profe2 = new Professor("TE1");
+                profe2.creahorariprofe();
+                map.put("TE1",profe2);	
+                
+                System.out.println("Horariiiiii");
+                // Imprimimos el Map con un Iterador
+                Iterator it = map.keySet().iterator();
+                Professor proferecollit;
+                while(it.hasNext()){
+                  String key = it.next().toString();
+                  proferecollit = map.get(key);
+                  System.out.println("Clave: " + key + " -> Valor: " + proferecollit.horari[0][0]);
+                }
+            }
+        });
         
         Scene scene = new Scene(root, 300, 250);
         
-        primaryStage.setTitle("Importo csv");
+        primaryStage.setTitle("Importo horaris a veure què...");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
