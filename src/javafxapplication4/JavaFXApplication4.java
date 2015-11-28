@@ -74,7 +74,7 @@ public class JavaFXApplication4 extends Application {
         String cognom1 = "";
         String cognom2 = "";
         String departament = "";
-        char horari [][] = new char [DIES][HORA];
+        char horari[][] = new char[DIES][HORA];
         
         //Constructor simple
         Professor(String c){
