@@ -66,12 +66,14 @@ public class JavaFXApplication4 extends Application {
     // Classe professor
     class Professor {
         
+        //variables de classe
         int hores_guardia = 4;
         int hores_lectives = 20;
         String codi = "";
         String nom = "";
         String cognom1 = "";
         String cognom2 = "";
+        String departament = "";
         char horari [][] = new char [DIES][HORA];
         
         //Constructor simple
