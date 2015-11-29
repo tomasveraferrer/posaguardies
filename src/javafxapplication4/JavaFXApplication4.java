@@ -74,6 +74,11 @@ public class JavaFXApplication4 extends Application {
         String cognom2 = "";
         char horari [][] = new char [DIES][HORA];
         
+        int comptaforats = 0;
+        int temporal = 0;
+        boolean foratiniciat = false;
+        boolean venimdix = false; 
+        
         //Constructor simple
         Professor(String c){
             this.codi = c;
@@ -113,10 +118,79 @@ public class JavaFXApplication4 extends Application {
         return true;
         }
         
-        //Calculem els forats del professor
-        public Boolean calculaforats() {
-        
-        return true;
+        //Calculem els forats del professor l'horari ha d'estar creat prèviament
+        public int calculaforats() {
+          
+            char bb;
+            for ( int k = 0; k < DIES; k++)
+                    {
+
+                        this.temporal = 0;
+                        this.foratiniciat = false;
+                        this.venimdix = false; 
+                        
+                        for ( int m = 0; m < HORA; m++)
+                        {
+                            bb = this.horari[k][m];
+                            
+                        //    System.out.print("\n dades abans: "+" | "+bb+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
+
+                            //si es blanc i no hem començat no el comptem
+                            if (bb == '-' && this.foratiniciat == false && this.venimdix == false){
+                                this.foratiniciat = false;
+                                this.venimdix = false;
+                                //System.out.print("\n logica: _00");    
+
+                            }else 
+                            //si es blanc i forat no iniciat i venim d'X --> obrim forat i comptem i venim d'X false
+                                if (bb == '-' && this.foratiniciat == false && this.venimdix == true){
+                                    this.foratiniciat = true;
+                                    this.venimdix = false;
+                                    this.temporal++;
+                                    //System.out.print("\n logica: _01"); 
+                                }else
+                            //si es blanc i hi ha forat i no venim d'X --> es forat i el comptem
+                                    if (bb == '-' && this.foratiniciat == true && this.venimdix == false){
+                                        this.foratiniciat = true;
+                                        this.venimdix = false;
+                                        this.temporal++;
+                                        //System.out.print("\n logica: _10"); 
+                                    }else
+                            //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
+                                        if (bb == '-' && this.foratiniciat == true && this.venimdix == true){
+                                            this.foratiniciat = true;
+                                            this.venimdix = false;
+                                            this.temporal++;
+                                            //System.out.print("\n logica: _11"); 
+                                        }else
+                            //si hi ha classe no hi havia forat i no venim d'X --> venim d'X i no comptem forat                
+                                            if (bb != '-' && this.foratiniciat == false && this.venimdix == false){
+                                                this.foratiniciat = false;
+                                                this.venimdix = true;
+                                                //System.out.print("\n logica: X00"); 
+                                            }else
+                            //si hi ha classe no hi havia forat i sí venim d'X --> venim d'X i no comptem forat                    
+                                                if (bb != '-' && this.foratiniciat == false && this.venimdix == true){
+                                                   this.foratiniciat = false;
+                                                   this.venimdix = true; 
+                                                   //System.out.print("\n logica: X01"); 
+                                                }else
+                            //si hi ha classe i hi havia forat i no venim d'X --> no comptem forat, venim d'X, incrementem comptador globali this.temporal a 0                       
+                                                    if (bb != '-' && this.foratiniciat == true && this.venimdix == false){
+                                                        this.foratiniciat = false;
+                                                        this.venimdix = true;
+                                                        this.comptaforats = this.comptaforats + this.temporal;
+                                                        this.temporal = 0;
+                                                        //System.out.print("\n logica: X10"); 
+                                                    }else{
+                            //si hi ha classe i hi ha havia forat i venim d'X --> cas extrany i no fem res                           
+                                                        //System.out.print("\n logica: X11"); 
+                                                    }
+                      //System.out.print("\n trec el comptador: " + this.comptaforats +" dades despres: "+" | "+bb+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
+                        }
+                    }
+            
+        return this.comptaforats;
         }
         
     }
@@ -158,7 +232,7 @@ public class JavaFXApplication4 extends Application {
                     Logger.getLogger(JavaFXApplication4.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-                // Poblem la SuperMatriu amb ' '
+                // Poblem la SuperMatriu amb '-'
                 for ( int j = 0; j < grups.length; j++)
                 {
                                     
@@ -166,7 +240,21 @@ public class JavaFXApplication4 extends Application {
                     {
                         for ( int m = 0; m < HORA; m++)
                         {
-                            SuperMatriu[j][k][m] = ' ';
+                            SuperMatriu[j][k][m] = '-';
+                        }
+                    }
+                   
+                } 
+                
+                // Poblem la SuperMatriuProfes amb '-'
+                for ( int j = 0; j < grups.length; j++)
+                {
+                                    
+                    for ( int k = 0; k < DIES; k++)
+                    {
+                        for ( int m = 0; m < HORA; m++)
+                        {
+                            SuperMatriuProfes[j][k][m] = '-';
                         }
                     }
                    
@@ -281,23 +369,33 @@ public class JavaFXApplication4 extends Application {
                 //creo un hashmap o alguna cosa similar
                 Map<String, Professor> map = new HashMap<>();
                 //creo profes
-                Professor profe1 = new Professor("TE4");
-                profe1.creahorariprofe();
-                map.put("TE4",profe1);	
                 
-                Professor profe2 = new Professor("TE1");
-                profe2.creahorariprofe();
-                map.put("TE1",profe2);	
+                for ( int j = 0; j < profes.length; j++)
+                {
+                   
+                   System.out.print("\n entro al hashmap el profe: " + profes[j]);
+                   Professor profe1 = new Professor(profes[j]);
+                   profe1.creahorariprofe();
+                   map.put(profes[j],profe1);	
+                   
+                } 
                 
-                System.out.println("Horariiiiii");
+                              
+                System.out.println("\n Horariiiiii");
                 // Imprimimos el Map con un Iterador
                 Iterator it = map.keySet().iterator();
                 Professor proferecollit;
                 while(it.hasNext()){
                   String key = it.next().toString();
                   proferecollit = map.get(key);
-                  System.out.println("Clave: " + key + " -> Valor: " + proferecollit.horari[0][0]);
+                  System.out.println("Clau: " + key + " -> Valor: " + proferecollit.horari[0][0] + " amb possibles guàrdies: " + proferecollit.hores_guardia);
+                  System.out.println("Forats: " + proferecollit.calculaforats());
                 }
+                /* 
+                Professor proferecollit = map.get("TE1");
+                int val = proferecollit.calculaforats();
+                System.out.println("Professor: TE1  " + val);
+                */
             }
         });
         
