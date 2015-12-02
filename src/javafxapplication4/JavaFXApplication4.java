@@ -28,30 +28,30 @@ import javafx.stage.Stage;
  */
 public class JavaFXApplication4 extends Application {
     
-    final int MAX_DADA = 10000;
-    final int DIES = 5;
-    final int HORA = 20;
-    int i = 0;
-    int cont_h_grup = 0;
-    int cont_h_profe = 0;
-    int enteroDIA = 0;
-    int enteroHORA = 0;
-    String valor;
-    String matriu[] = new String[MAX_DADA];
-    String grups[] = {"E1A","E1B","E1C","E1D",
+    public final int MAX_DADA = 10000;
+    public static int DIES = 5;// variable estàtica per poder accedir des de fora de la classe
+    public static int HORA = 20;// variable estàtica per poder accedir des de fora de la classe
+    public int i = 0;
+    public int cont_h_grup = 0;
+    public int cont_h_profe = 0;
+    public int enteroDIA = 0;
+    public int enteroHORA = 0;
+    public String valor;
+    public String matriu[] = new String[MAX_DADA];
+    public static String grups[] = {"E1A","E1B","E1C","E1D",
                         "E2A","E2B","E2C","E2D",
                         "E3A","E3B","E3C","E3D",
                         "E4A","E4B","E4C","E4D",
                         "B1A","B1B","B2A","B2B",
                         "CFA","CFB","CFC"};
-    String profes[] = {"AN1","AN2","AN3","AN4",
+    public static String profes[] = {"AN1","AN2","AN3","AN4",
                         "ES1","ES2","ES3","ES4",
                         "CA1","CA2","CA3","CA4",
                         "MA1","MA2","MA3","MA4",
                         "TE1","TE2","TE3","TE4",
                         "HI1","HI2","HI3","HI4"};
-    char SuperMatriu [][][] = new char[grups.length][DIES][HORA];
-    char SuperMatriuProfes [][][] = new char[profes.length][DIES][HORA];
+    public char SuperMatriu[][][] = new char[grups.length][DIES][HORA];
+    public static char SuperMatriuProfes[][][] = new char[profes.length][DIES][HORA];// variable estàtica per poder accedir des de fora de la classe
     
     // Funció per treure els símbols "
     public String sensecometes(String ambcometes) {
@@ -63,219 +63,7 @@ public class JavaFXApplication4 extends Application {
         return sensecometes;
     }
     
-    // Classe professor
-    class Professor {
-        
-        //variables de classe
-        int hores_guardia = 4;
-        int hores_lectives = 20;
-        String codi = "";
-        String nom = "";
-        String cognom1 = "";
-        String cognom2 = "";
-        String departament = "";
-        char horari[][] = new char[DIES][HORA];
-        
-        int comptapermanencies = 0;
-        int comptaforats = 0;
-        int temporal = 0;
-        boolean foratiniciat = false;
-        boolean venimdix = false; 
-        
-        //Constructor simple
-        Professor(String c){
-            this.codi = c;
-        }
-        //Constructor multi
-        Professor(String c, String n, String c1, String c2, int hg, int hl){
-            this.codi = c;
-            this.nom = n;
-            this.cognom1 = c1;
-            this.cognom2 = c2;
-            this.hores_guardia = hg;
-            this.hores_lectives = hl;
-        }
-        //Calculem els forats del professor
-        public Boolean creahorariprofe() {
-        
-            for ( int j = 0; j < profes.length; j++)
-                {
-                  if (profes[j].equals(this.codi)){ 
-                   
-                    for ( int m = 0; m < HORA; m++)
-                    {
-                        
-                        for ( int k = 0; k < DIES; k++)
-                        {
-                            this.horari[k][m] = SuperMatriuProfes[j][k][m];
-                        }
-                    }
-                  } 
-                } 
-            
-        return true;
-        }
-        //Omple els forats
-        public Boolean ompleforats() {
-        
-        return true;
-        }
-        
-        //Calculem els forats del professor l'horari ha d'estar creat prèviament
-        public int calculaforats() {
-          
-            char bb;
-            for ( int k = 0; k < DIES; k++)
-                    {
-
-                        this.temporal = 0;
-                        this.foratiniciat = false;
-                        this.venimdix = false; 
-                        
-                        for ( int m = 0; m < HORA; m++)
-                        {
-                            bb = this.horari[k][m];
-                            
-                        //    System.out.print("\n dades abans: "+" | "+bb+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
-
-                            //si es blanc i no hem començat no el comptem
-                            if (bb == '-' && this.foratiniciat == false && this.venimdix == false){
-                                this.foratiniciat = false;
-                                this.venimdix = false;
-                                //System.out.print("\n logica: _00");    
-
-                            }else 
-                            //si es blanc i forat no iniciat i venim d'X --> obrim forat i comptem i venim d'X false
-                                if (bb == '-' && this.foratiniciat == false && this.venimdix == true){
-                                    this.foratiniciat = true;
-                                    this.venimdix = false;
-                                    this.temporal++;
-                                    //System.out.print("\n logica: _01"); 
-                                }else
-                            //si es blanc i hi ha forat i no venim d'X --> es forat i el comptem
-                                    if (bb == '-' && this.foratiniciat == true && this.venimdix == false){
-                                        this.foratiniciat = true;
-                                        this.venimdix = false;
-                                        this.temporal++;
-                                        //System.out.print("\n logica: _10"); 
-                                    }else
-                            //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
-                                        if (bb == '-' && this.foratiniciat == true && this.venimdix == true){
-                                            this.foratiniciat = true;
-                                            this.venimdix = false;
-                                            this.temporal++;
-                                            //System.out.print("\n logica: _11"); 
-                                        }else
-                            //si hi ha classe no hi havia forat i no venim d'X --> venim d'X i no comptem forat                
-                                            if (bb != '-' && this.foratiniciat == false && this.venimdix == false){
-                                                this.foratiniciat = false;
-                                                this.venimdix = true;
-                                                //System.out.print("\n logica: X00"); 
-                                            }else
-                            //si hi ha classe no hi havia forat i sí venim d'X --> venim d'X i no comptem forat                    
-                                                if (bb != '-' && this.foratiniciat == false && this.venimdix == true){
-                                                   this.foratiniciat = false;
-                                                   this.venimdix = true; 
-                                                   //System.out.print("\n logica: X01"); 
-                                                }else
-                            //si hi ha classe i hi havia forat i no venim d'X --> no comptem forat, venim d'X, incrementem comptador globali this.temporal a 0                       
-                                                    if (bb != '-' && this.foratiniciat == true && this.venimdix == false){
-                                                        this.foratiniciat = false;
-                                                        this.venimdix = true;
-                                                        this.comptaforats = this.comptaforats + this.temporal;
-                                                        this.temporal = 0;
-                                                        //System.out.print("\n logica: X10"); 
-                                                    }else{
-                            //si hi ha classe i hi ha havia forat i venim d'X --> cas extrany i no fem res                           
-                                                        //System.out.print("\n logica: X11"); 
-                                                    }
-                      //System.out.print("\n trec el comptador: " + this.comptaforats +" dades despres: "+" | "+bb+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
-                        }
-                    }
-            
-        return this.comptaforats;
-        }
-        
-        //Calculem les permanències del professor l'horari ha d'estar creat prèviament
-        public int calculapermanencies() {
-          
-            char bb;
-            for ( int k = 0; k < DIES; k++)
-                    {
-
-                        this.temporal = 0;
-                        this.foratiniciat = false;
-                        this.venimdix = false; 
-                        
-                        for ( int m = 0; m < HORA; m++)
-                        {
-                            bb = this.horari[k][m];
-                            
-                        //    System.out.print("\n dades abans: "+" | "+bb+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
-
-                            //si es blanc i no hem començat no el comptem
-                            if (bb == '-' && this.foratiniciat == false && this.venimdix == false){
-                                this.foratiniciat = false;
-                                this.venimdix = false;
-                                //System.out.print("\n logica: _00");    
-
-                            }else 
-                            //si es blanc i forat no iniciat i venim d'X --> obrim forat i comptem forat i venim d'X false
-                                if (bb == '-' && this.foratiniciat == false && this.venimdix == true){
-                                    this.foratiniciat = true;
-                                    this.venimdix = false;
-                                    this.temporal++;
-                                    //System.out.print("\n logica: _01"); 
-                                }else
-                            //si es blanc i hi ha forat i no venim d'X --> es forat i comptem forat
-                                    if (bb == '-' && this.foratiniciat == true && this.venimdix == false){
-                                        this.foratiniciat = true;
-                                        this.venimdix = false;
-                                        this.temporal++;
-                                        //System.out.print("\n logica: _10"); 
-                                    }else
-                            //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
-                                        if (bb == '-' && this.foratiniciat == true && this.venimdix == true){
-                                            this.foratiniciat = true;
-                                            this.venimdix = false;
-                                            this.temporal++;
-                                            //System.out.print("\n logica: _11"); 
-                                        }else
-                            //si hi ha classe no hi havia forat i no venim d'X --> venim d'X i Sí comptem                 
-                                            if (bb != '-' && this.foratiniciat == false && this.venimdix == false){
-                                                this.foratiniciat = false;
-                                                this.venimdix = true;
-                                                this.comptapermanencies++;
-                                                //System.out.print("\n logica: X00"); 
-                                            }else
-                            //si hi ha classe no hi havia forat i sí venim d'X --> venim d'X i Sí comptem                   
-                                                if (bb != '-' && this.foratiniciat == false && this.venimdix == true){
-                                                   this.foratiniciat = false;
-                                                   this.venimdix = true;
-                                                   this.comptapermanencies++;
-                                                   //System.out.print("\n logica: X01"); 
-                                                }else
-                            //si hi ha classe i hi havia forat i no venim d'X --> no comptem forat, venim d'X, incrementem comptador globali this.temporal a 0                       
-                                                    if (bb != '-' && this.foratiniciat == true && this.venimdix == false){
-                                                        this.foratiniciat = false;
-                                                        this.venimdix = true;
-                                                        this.comptapermanencies++;
-                                                        this.comptapermanencies = this.comptapermanencies + this.temporal;
-                                                        this.temporal = 0;
-                                                        //System.out.print("\n logica: X10"); 
-                                                    }else{
-                            //si hi ha classe i hi ha havia forat i venim d'X --> cas extrany i no fem res                           
-                                                        //System.out.print("\n logica: X11"); 
-                                                    }
-                      //System.out.print("\n trec el comptador: " + this.comptapermanencies +" dades despres: "+" | "+bb+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
-                        }
-                    }
-            
-        return this.comptapermanencies;
-        }
-        
-    }
-    
+   
     @Override
     public void start(Stage primaryStage) {
                 
