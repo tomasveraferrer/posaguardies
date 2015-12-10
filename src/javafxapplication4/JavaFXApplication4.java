@@ -122,7 +122,7 @@ public class JavaFXApplication4 extends Application {
                 }
 
                 // Poblem la SuperMatriuProfes amb '-'
-                for (int j = 0; j < grups.length; j++) {
+                for (int j = 0; j < profes.length; j++) {
 
                     for (int k = 0; k < DIES; k++) {
                         for (int m = 0; m < HORA; m++) {
@@ -132,7 +132,7 @@ public class JavaFXApplication4 extends Application {
 
                 }
 
-                // fem una prova per mostrar  classes per grups i canviar la SuperMatriu
+                // fem una prova per mostrar classes per grups i canviar la SuperMatriu
                 for (int c = 0; c < grups.length; c++) {
                     System.out.print("\n grup: " + grups[c]);
                     cont_h_grup = 0;
@@ -176,7 +176,7 @@ public class JavaFXApplication4 extends Application {
 
                 }
 
-                // fem una prova per mostrar  classes per grups i canviar la SuperMatriuProfes
+                // fem una prova per mostrar classes per grups i canviar la SuperMatriuProfes
                 for (int c = 0; c < profes.length; c++) {
                     System.out.print("\n profe: " + profes[c]);
                     cont_h_profe = 0;
@@ -195,7 +195,12 @@ public class JavaFXApplication4 extends Application {
                             enteroDIA = Integer.parseInt((matriu[(p + 3)]));
                             enteroHORA = Integer.parseInt((matriu[(p + 4)]));
                             System.out.print("\n | " + enteroDIA + " | " + enteroHORA);
+                            //si és abans del pati no fem res, si és després afegim l'hora del pati
+                            if (enteroHORA - 1 < 3){
                             SuperMatriuProfes[c][enteroDIA - 1][enteroHORA - 1] = 'X'; // Marco que està ocupat
+                            }else{
+                                SuperMatriuProfes[c][enteroDIA - 1][enteroHORA] = 'X';
+                            }
                         }
                     }
                     System.out.print("\n Total hores setmanals del profe: " + cont_h_profe);
