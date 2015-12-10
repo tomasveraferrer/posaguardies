@@ -218,14 +218,12 @@ public class JavaFXApplication4 extends Application {
                         matriuGuardies[m][r] = new int[4];
                     }
                 }
-                
                 //posem 3 profes de guàrdia a 1a hora
                 matriuGuardies[0][0] = new int[3];
                 matriuGuardies[1][0] = new int[3];
                 matriuGuardies[2][0] = new int[3];
                 matriuGuardies[3][0] = new int[3];
                 matriuGuardies[4][0] = new int[3];
-                
                 //posem 6 profes de guàrdia a l'hora del pati
                 matriuGuardies[0][3] = new int[6];
                 matriuGuardies[1][3] = new int[6];
