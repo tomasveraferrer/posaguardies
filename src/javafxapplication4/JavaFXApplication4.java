@@ -106,12 +106,16 @@ public class JavaFXApplication4 extends Application {
                     Logger.getLogger(JavaFXApplication4.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                // Poblem la SuperMatriu amb '-'
+                // Poblem la SuperMatriu amb '-' i posem 'P' a l'hora del pati
                 for (int j = 0; j < grups.length; j++) {
 
                     for (int k = 0; k < DIES; k++) {
                         for (int m = 0; m < HORA; m++) {
+                            if (m != 3){
                             SuperMatriu[j][k][m] = '-';
+                            }else{
+                                SuperMatriu[j][k][m] = 'p';
+                            }
                         }
                     }
 
