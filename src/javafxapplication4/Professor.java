@@ -96,25 +96,31 @@ public class Professor {
                                 //System.out.print("\n logica: _00");    
 
                             }else 
-                            //si es blanc i forat no iniciat i venim d'X --> obrim forat i comptem i venim d'X false
+                            //si es blanc i forat no iniciat i venim d'X --> obrim forat i comptem (si no es pati) i venim d'X false
                                 if (bb == '-' && this.foratiniciat == false && this.venimdix == true){
                                     this.foratiniciat = true;
                                     this.venimdix = false;
-                                    this.temporal++;
+                                    if (m != 3){
+                                    this.temporal++; 
+                                    }                                       
                                     //System.out.print("\n logica: _01"); 
                                 }else
                             //si es blanc i hi ha forat i no venim d'X --> es forat i el comptem
                                     if (bb == '-' && this.foratiniciat == true && this.venimdix == false){
                                         this.foratiniciat = true;
                                         this.venimdix = false;
-                                        this.temporal++;
+                                        if (m != 3){
+                                        this.temporal++; 
+                                        } 
                                         //System.out.print("\n logica: _10"); 
                                     }else
                             //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
                                         if (bb == '-' && this.foratiniciat == true && this.venimdix == true){
                                             this.foratiniciat = true;
                                             this.venimdix = false;
-                                            this.temporal++;
+                                            if (m != 3){
+                                            this.temporal++; 
+                                            } 
                                             //System.out.print("\n logica: _11"); 
                                         }else
                             //si hi ha classe no hi havia forat i no venim d'X --> venim d'X i no comptem forat                
@@ -171,25 +177,31 @@ public class Professor {
                                 //System.out.print("\n logica: _00");    
 
                             }else 
-                            //si es blanc i forat no iniciat i venim d'X --> obrim forat i comptem forat i venim d'X false
+                            //si es blanc i forat no iniciat i venim d'X --> obrim forat i comptem forat (si no es pati) i venim d'X false
                                 if (bb == '-' && this.foratiniciat == false && this.venimdix == true){
                                     this.foratiniciat = true;
                                     this.venimdix = false;
-                                    this.temporal++;
+                                    if (m != 3){
+                                    this.temporal++; 
+                                    } 
                                     //System.out.print("\n logica: _01"); 
                                 }else
                             //si es blanc i hi ha forat i no venim d'X --> es forat i comptem forat
                                     if (bb == '-' && this.foratiniciat == true && this.venimdix == false){
                                         this.foratiniciat = true;
                                         this.venimdix = false;
-                                        this.temporal++;
+                                        if (m != 3){
+                                        this.temporal++; 
+                                        } 
                                         //System.out.print("\n logica: _10"); 
                                     }else
                             //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
                                         if (bb == '-' && this.foratiniciat == true && this.venimdix == true){
                                             this.foratiniciat = true;
                                             this.venimdix = false;
-                                            this.temporal++;
+                                            if (m != 3){
+                                            this.temporal++; 
+                                            } 
                                             //System.out.print("\n logica: _11"); 
                                         }else
                             //si hi ha classe no hi havia forat i no venim d'X --> venim d'X i Sí comptem                 
