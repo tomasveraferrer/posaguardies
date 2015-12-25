@@ -26,6 +26,7 @@ public class Professor {
         
         int comptapermanencies = 0;
         int comptaforats = 0;
+        int temp_forats = 0;
         int temporal = 0;
         boolean foratiniciat = false;
         boolean venimdix = false; 
@@ -68,7 +69,102 @@ public class Professor {
         
         //Omple els forats
         public Boolean ompleforats() {
-        
+            //en cas que el professor tingui guàrdies i forats assignar guàrdies a forats
+            //disminuïmm el número d' hores_guàrdia
+            this.temp_forats = this.comptaforats; //inicialitzem el comtador
+            if (this.hores_guardia > 0) {
+                    
+                    //busquem forat i afegim G al prmer forat que trobem
+                    char cc;
+                    for ( int k = 0; k < DIES; k++)
+                    {
+
+                                this.temporal = 0;
+                                this.foratiniciat = false;
+                                this.venimdix = false; 
+
+                                for ( int m = 0; m < HORA; m++)
+                                {
+                                cc = this.horari[k][m];
+                            
+                                //    System.out.print("\n dades abans: "+" | "+cc+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
+
+                                    //si es blanc i no hem començat no el comptem
+                                    if (cc == '-' && this.foratiniciat == false && this.venimdix == false){
+                                        this.foratiniciat = false;
+                                        this.venimdix = false;
+                                        //System.out.print("\n logica: _00");    
+
+                                    }else 
+                                    //si es blanc i forat no iniciat i venim d'X --> obrim forat i posem G (si no es pati) i venim d'X false
+                                        if (cc == '-' && this.foratiniciat == false && this.venimdix == true){
+                                            this.foratiniciat = true;
+                                            this.venimdix = false;
+                                            if (m != 3){
+                                                this.temporal++;
+                                                if (this.temp_forats > 0 && hores_guardia > 0){
+                                                    this.horari[k][m]= 'G'; //posem G
+                                                    this.temp_forats--;
+                                                    this.hores_guardia--;
+                                                }
+                                            }                                       
+                                            //System.out.print("\n logica: _01"); 
+                                        }else
+                                    //si es blanc i hi ha forat i no venim d'X --> es forat i el comptem
+                                            if (cc == '-' && this.foratiniciat == true && this.venimdix == false){
+                                                this.foratiniciat = true;
+                                                this.venimdix = false;
+                                                if (m != 3){
+                                                this.temporal++;
+                                                if (this.temp_forats > 0 && hores_guardia > 0){
+                                                    this.horari[k][m]= 'G'; //posem G
+                                                    this.temp_forats--;
+                                                    this.hores_guardia--;
+                                                }
+                                                } 
+                                                //System.out.print("\n logica: _10"); 
+                                            }else
+                                    //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
+                                                if (cc == '-' && this.foratiniciat == true && this.venimdix == true){
+                                                    this.foratiniciat = true;
+                                                    this.venimdix = false;
+                                                    if (m != 3){
+                                                    this.temporal++; 
+                                                    if (this.temp_forats > 0 && hores_guardia > 0){
+                                                    this.horari[k][m]= 'G'; //posem G
+                                                    this.temp_forats--;
+                                                    this.hores_guardia--;
+                                                }
+                                                    } 
+                                                    //System.out.print("\n logica: _11"); 
+                                                }else
+                                    //si hi ha classe no hi havia forat i no venim d'X --> venim d'X i no comptem forat                
+                                                    if (cc != '-' && this.foratiniciat == false && this.venimdix == false){
+                                                        this.foratiniciat = false;
+                                                        this.venimdix = true;
+                                                        //System.out.print("\n logica: X00"); 
+                                                    }else
+                                    //si hi ha classe no hi havia forat i sí venim d'X --> venim d'X i no comptem forat                    
+                                                        if (cc != '-' && this.foratiniciat == false && this.venimdix == true){
+                                                           this.foratiniciat = false;
+                                                           this.venimdix = true; 
+                                                           //System.out.print("\n logica: X01"); 
+                                                        }else
+                                    //si hi ha classe i hi havia forat i no venim d'X --> no comptem forat, venim d'X, incrementem comptador globali this.temporal a 0                       
+                                                            if (cc != '-' && this.foratiniciat == true && this.venimdix == false){
+                                                                this.foratiniciat = false;
+                                                                this.venimdix = true;
+                                                                this.comptaforats = this.comptaforats + this.temporal;
+                                                                this.temporal = 0;
+                                                                //System.out.print("\n logica: X10"); 
+                                                            }else{
+                                    //si hi ha classe i hi ha havia forat i venim d'X --> cas extrany i no fem res                           
+                                                                //System.out.print("\n logica: X11"); 
+                                                            }
+                                }
+                    }
+
+            }
         return true;
         }
         
