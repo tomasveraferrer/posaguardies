@@ -264,7 +264,9 @@ public class JavaFXApplication4 extends Application {
                     System.out.print("\n entro al hashmap el profe: " + profes[j]);
                     Professor profe1 = new Professor(profes[j]);
                     profe1.creahorariprofe();
-                    // profe1.ompleforats();
+                    profe1.calculaforats();
+                  //  profe1.ompleforats();
+                    profe1.imprimeix_llista_forats();
                     map.put(profes[j], profe1);
 
                 }
@@ -277,8 +279,9 @@ public class JavaFXApplication4 extends Application {
                     String key = it.next().toString();
                     proferecollit = map.get(key);
                     System.out.println("Clau: " + key + " -> Valor: " + proferecollit.horari[0][0] + " amb possibles guàrdies: " + proferecollit.hores_guardia);
-                    System.out.println("Forats: " + proferecollit.calculaforats());
+                    System.out.println("Forats: " + proferecollit.comptaforats);
                     System.out.println("Permanències: " + proferecollit.calculapermanencies());
+                    proferecollit.imprimeix_horari();
                 }
                 
             

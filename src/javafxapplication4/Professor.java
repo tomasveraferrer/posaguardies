@@ -5,6 +5,10 @@
  */
 package javafxapplication4;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 
 /**
  *
@@ -28,8 +32,11 @@ public class Professor {
         int comptaforats = 0;
         int temp_forats = 0;
         int temporal = 0;
+        int temporal2 = 0;
         boolean foratiniciat = false;
         boolean venimdix = false; 
+        
+        Map<String, String> llista_forats = new HashMap<>();
         
         //Constructor simple
         Professor(String c){
@@ -98,17 +105,20 @@ public class Professor {
                                     }else 
                                     //si es blanc i forat no iniciat i venim d'X --> obrim forat i posem G (si no es pati) i venim d'X false
                                         if (cc == '-' && this.foratiniciat == false && this.venimdix == true){
+                                        System.out.print("\n comptaforat: "+comptaforats+" hores_guardia: "+hores_guardia); 
+
                                             this.foratiniciat = true;
                                             this.venimdix = false;
                                             if (m != 3){
                                                 this.temporal++;
-                                                if (this.temp_forats > 0 && hores_guardia > 0){
+                                                if (this.temp_forats > 0 && this.hores_guardia > 0){
                                                     this.horari[k][m]= 'G'; //posem G
                                                     this.temp_forats--;
                                                     this.hores_guardia--;
+                                                    System.out.print("\n HEM PASSAT PER L'INICI D'UN FORAT!!!!!!!!!!!!!!!!!!!!!!!"); 
                                                 }
                                             }                                       
-                                            //System.out.print("\n logica: _01"); 
+                                          //  System.out.print("\n logica: _01"); 
                                         }else
                                     //si es blanc i hi ha forat i no venim d'X --> es forat i el comptem
                                             if (cc == '-' && this.foratiniciat == true && this.venimdix == false){
@@ -116,11 +126,11 @@ public class Professor {
                                                 this.venimdix = false;
                                                 if (m != 3){
                                                 this.temporal++;
-                                                if (this.temp_forats > 0 && hores_guardia > 0){
-                                                    this.horari[k][m]= 'G'; //posem G
-                                                    this.temp_forats--;
-                                                    this.hores_guardia--;
-                                                }
+                                                    if (this.temp_forats > 0 && this.hores_guardia > 0){
+                                                        this.horari[k][m]= 'G'; //posem G
+                                                        this.temp_forats--;
+                                                        this.hores_guardia--;
+                                                    }
                                                 } 
                                                 //System.out.print("\n logica: _10"); 
                                             }else
@@ -130,11 +140,11 @@ public class Professor {
                                                     this.venimdix = false;
                                                     if (m != 3){
                                                     this.temporal++; 
-                                                    if (this.temp_forats > 0 && hores_guardia > 0){
-                                                    this.horari[k][m]= 'G'; //posem G
-                                                    this.temp_forats--;
-                                                    this.hores_guardia--;
-                                                }
+                                                        if (this.temp_forats > 0 && this.hores_guardia > 0){
+                                                            this.horari[k][m]= 'G'; //posem G
+                                                            this.temp_forats--;
+                                                            this.hores_guardia--;
+                                                        }
                                                     } 
                                                     //System.out.print("\n logica: _11"); 
                                                 }else
@@ -154,8 +164,17 @@ public class Professor {
                                                             if (cc != '-' && this.foratiniciat == true && this.venimdix == false){
                                                                 this.foratiniciat = false;
                                                                 this.venimdix = true;
-                                                                this.comptaforats = this.comptaforats + this.temporal;
-                                                                this.temporal = 0;
+                                                                //this.comptaforats = this.comptaforats + this.temporal;
+                                                                //entrem els forats al map
+                                                                if (this.temporal > 0){
+                                                                    for (int g = 0; g <this.temporal; g++ ){
+                                                                        String dada0 = Integer.toString(g);
+                                                                        String dada1 = Integer.toString(k+1);
+                                                                        String dada2 = Integer.toString(m-g);
+                                                                        llista_forats.put(dada0, this.codi+":"+dada1+":"+dada2);
+                                                                    }
+                                                                }
+                                                               this.temporal = 0;
                                                                 //System.out.print("\n logica: X10"); 
                                                             }else{
                                     //si hi ha classe i hi ha havia forat i venim d'X --> cas extrany i no fem res                           
@@ -171,6 +190,7 @@ public class Professor {
         //Calculem els forats del professor l'horari ha d'estar creat prèviament
         public int calculaforats() {
           
+            this.temporal2 = 0;
             char bb;
             for ( int k = 0; k < DIES; k++)
                     {
@@ -236,6 +256,16 @@ public class Professor {
                                                         this.foratiniciat = false;
                                                         this.venimdix = true;
                                                         this.comptaforats = this.comptaforats + this.temporal;
+                                                        
+                                                        if (this.temporal > 0){
+                                                                    for (int g = 0; g <this.temporal; g++ ){
+                                                                        String dada0 = Integer.toString(this.temporal2 + g);
+                                                                        String dada1 = Integer.toString(k+1); 
+                                                                        String dada2 = Integer.toString(m-g);
+                                                                        llista_forats.put(dada0, this.codi+":"+dada1+":"+dada2);
+                                                                    }
+                                                                }
+                                                        this.temporal2 = this.temporal2 + this.temporal; 
                                                         this.temporal = 0;
                                                         //System.out.print("\n logica: X10"); 
                                                     }else{
@@ -332,5 +362,27 @@ public class Professor {
             
         return this.comptapermanencies;
         }
-    
+        
+        public void imprimeix_horari() {
+            System.out.print(" \n ================ " + this.codi);
+                    for (int m = 0; m < HORA; m++) {
+                        System.out.print("\n");
+                        for (int k = 0; k < DIES; k++) {
+                            System.out.print(this.horari[k][m]);
+                        }
+                    }
+            System.out.print(" \n ================ FORATS TEMPORAALS: "+ this.temp_forats +" \n");
+            System.out.print(" \n ================ COMPTAFORATS ABANS: "+ this.comptaforats +" \n");
+            System.out.print(" \n ================ HORES GUARDIA: "+ this.hores_guardia +" \n");
+        }
+        public void imprimeix_llista_forats(){
+            Iterator ite = this.llista_forats.keySet().iterator();
+                String horarecollit;
+                while (ite.hasNext()) {
+                    String key1 = ite.next().toString();
+                    horarecollit = llista_forats.get(key1);
+                    System.out.println("\n Clau: " + key1 + " -> Valor(profe:dia:hora): " + horarecollit);
+                    
+                }
+        }
 }
