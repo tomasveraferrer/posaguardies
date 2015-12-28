@@ -265,7 +265,7 @@ public class JavaFXApplication4 extends Application {
                     Professor profe1 = new Professor(profes[j]);
                     profe1.creahorariprofe();
                     profe1.calculaforats();
-                  //  profe1.ompleforats();
+                    profe1.ompleforats();
                     profe1.imprimeix_llista_forats();
                     map.put(profes[j], profe1);
 

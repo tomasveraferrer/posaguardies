@@ -76,115 +76,39 @@ public class Professor {
         
         //Omple els forats
         public Boolean ompleforats() {
-            //en cas que el professor tingui guàrdies i forats assignar guàrdies a forats
-            //disminuïmm el número d' hores_guàrdia
-            this.temp_forats = this.comptaforats; //inicialitzem el comtador
-            if (this.hores_guardia > 0) {
+            
+            String[] parts;
+            String part1;
+            String part2;
+            String part3;
+            int dia;
+            int hora;
+            int nombreguardies = this.hores_guardia;
+            
+            Iterator ite = llista_forats.keySet().iterator();
+                String dadallarga;
+                while (ite.hasNext() && nombreguardies > 0) {
+                    String key = ite.next().toString();
+                    dadallarga = llista_forats.get(key);
+                    System.out.println("Clau: " + key + " -> Valor: " + dadallarga);
                     
-                    //busquem forat i afegim G al prmer forat que trobem
-                    char cc;
-                    for ( int k = 0; k < DIES; k++)
-                    {
-
-                                this.temporal = 0;
-                                this.foratiniciat = false;
-                                this.venimdix = false; 
-
-                                for ( int m = 0; m < HORA; m++)
-                                {
-                                cc = this.horari[k][m];
-                            
-                                //    System.out.print("\n dades abans: "+" | "+cc+" | "+this.foratiniciat+" | "+this.venimdix+"\n");    
-
-                                    //si es blanc i no hem començat no el comptem
-                                    if (cc == '-' && this.foratiniciat == false && this.venimdix == false){
-                                        this.foratiniciat = false;
-                                        this.venimdix = false;
-                                        //System.out.print("\n logica: _00");    
-
-                                    }else 
-                                    //si es blanc i forat no iniciat i venim d'X --> obrim forat i posem G (si no es pati) i venim d'X false
-                                        if (cc == '-' && this.foratiniciat == false && this.venimdix == true){
-                                        System.out.print("\n comptaforat: "+comptaforats+" hores_guardia: "+hores_guardia); 
-
-                                            this.foratiniciat = true;
-                                            this.venimdix = false;
-                                            if (m != 3){
-                                                this.temporal++;
-                                                if (this.temp_forats > 0 && this.hores_guardia > 0){
-                                                    this.horari[k][m]= 'G'; //posem G
-                                                    this.temp_forats--;
-                                                    this.hores_guardia--;
-                                                    System.out.print("\n HEM PASSAT PER L'INICI D'UN FORAT!!!!!!!!!!!!!!!!!!!!!!!"); 
-                                                }
-                                            }                                       
-                                          //  System.out.print("\n logica: _01"); 
-                                        }else
-                                    //si es blanc i hi ha forat i no venim d'X --> es forat i el comptem
-                                            if (cc == '-' && this.foratiniciat == true && this.venimdix == false){
-                                                this.foratiniciat = true;
-                                                this.venimdix = false;
-                                                if (m != 3){
-                                                this.temporal++;
-                                                    if (this.temp_forats > 0 && this.hores_guardia > 0){
-                                                        this.horari[k][m]= 'G'; //posem G
-                                                        this.temp_forats--;
-                                                        this.hores_guardia--;
-                                                    }
-                                                } 
-                                                //System.out.print("\n logica: _10"); 
-                                            }else
-                                    //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
-                                                if (cc == '-' && this.foratiniciat == true && this.venimdix == true){
-                                                    this.foratiniciat = true;
-                                                    this.venimdix = false;
-                                                    if (m != 3){
-                                                    this.temporal++; 
-                                                        if (this.temp_forats > 0 && this.hores_guardia > 0){
-                                                            this.horari[k][m]= 'G'; //posem G
-                                                            this.temp_forats--;
-                                                            this.hores_guardia--;
-                                                        }
-                                                    } 
-                                                    //System.out.print("\n logica: _11"); 
-                                                }else
-                                    //si hi ha classe no hi havia forat i no venim d'X --> venim d'X i no comptem forat                
-                                                    if (cc != '-' && this.foratiniciat == false && this.venimdix == false){
-                                                        this.foratiniciat = false;
-                                                        this.venimdix = true;
-                                                        //System.out.print("\n logica: X00"); 
-                                                    }else
-                                    //si hi ha classe no hi havia forat i sí venim d'X --> venim d'X i no comptem forat                    
-                                                        if (cc != '-' && this.foratiniciat == false && this.venimdix == true){
-                                                           this.foratiniciat = false;
-                                                           this.venimdix = true; 
-                                                           //System.out.print("\n logica: X01"); 
-                                                        }else
-                                    //si hi ha classe i hi havia forat i no venim d'X --> no comptem forat, venim d'X, incrementem comptador globali this.temporal a 0                       
-                                                            if (cc != '-' && this.foratiniciat == true && this.venimdix == false){
-                                                                this.foratiniciat = false;
-                                                                this.venimdix = true;
-                                                                //this.comptaforats = this.comptaforats + this.temporal;
-                                                                //entrem els forats al map
-                                                                if (this.temporal > 0){
-                                                                    for (int g = 0; g <this.temporal; g++ ){
-                                                                        String dada0 = Integer.toString(g);
-                                                                        String dada1 = Integer.toString(k+1);
-                                                                        String dada2 = Integer.toString(m-g);
-                                                                        llista_forats.put(dada0, this.codi+":"+dada1+":"+dada2);
-                                                                    }
-                                                                }
-                                                               this.temporal = 0;
-                                                                //System.out.print("\n logica: X10"); 
-                                                            }else{
-                                    //si hi ha classe i hi ha havia forat i venim d'X --> cas extrany i no fem res                           
-                                                                //System.out.print("\n logica: X11"); 
-                                                            }
-                                }
+                    parts = dadallarga.split(":");
+                    part1 = parts[0]; // codi professor
+                    part2 = parts[1]; // dia 1 = dilluns
+                    part3 = parts[2]; // hora 1 = 8a9
+                    dia = Integer.parseInt(part2);
+                    hora = Integer.parseInt(part3);
+                    //canviem i restem 1 per adaptar-nos a la matriu horari si no és pati (ara és 4)
+                    if (hora != 4){
+                        dia--;
+                        hora--;
+                        this.horari[dia][hora]= 'G';
+                        nombreguardies--; 
                     }
-
-            }
-        return true;
+                    
+                    
+                }
+        return true;    
         }
         
         //Calculem els forats del professor l'horari ha d'estar creat prèviament
@@ -192,12 +116,14 @@ public class Professor {
           
             this.temporal2 = 0;
             char bb;
+            
             for ( int k = 0; k < DIES; k++)
                     {
 
                         this.temporal = 0;
                         this.foratiniciat = false;
-                        this.venimdix = false; 
+                        this.venimdix = false;
+                        boolean hempassatperpati= false;
                         
                         for ( int m = 0; m < HORA; m++)
                         {
@@ -226,8 +152,10 @@ public class Professor {
                                         this.foratiniciat = true;
                                         this.venimdix = false;
                                         if (m != 3){
-                                        this.temporal++; 
-                                        } 
+                                        this.temporal++;
+                                        }else{
+                                            hempassatperpati= true; //marquem que estem en un forat per evitar comptar més endavant
+                                        }
                                         //System.out.print("\n logica: _10"); 
                                     }else
                             //si es blanc i estem en forat i venim d'X --> venim d'X false i omptem forat         
@@ -256,6 +184,10 @@ public class Professor {
                                                         this.foratiniciat = false;
                                                         this.venimdix = true;
                                                         this.comptaforats = this.comptaforats + this.temporal;
+                                                        
+                                                        if (hempassatperpati){
+                                                            this.temporal++;
+                                                        }
                                                         
                                                         if (this.temporal > 0){
                                                                     for (int g = 0; g <this.temporal; g++ ){
