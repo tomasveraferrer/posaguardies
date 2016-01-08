@@ -33,6 +33,7 @@ public class Professor {
         int temp_forats = 0;
         int temporal = 0;
         int temporal2 = 0;
+        int terminals [][] = new int[DIES][2]; // per cada dia, posició 0 és 1a hora i 1, última hora de permanència
         boolean foratiniciat = false;
         boolean venimdix = false; 
         
@@ -267,6 +268,9 @@ public class Professor {
                                                 this.foratiniciat = false;
                                                 this.venimdix = true;
                                                 this.comptapermanencies++;
+                                                //com que és la primera és la primera hora terminal del dia i última per si de cas
+                                                this.terminals[k][0]= m; //1a hora terminal
+                                                this.terminals[k][1]= m; //última hora terminal
                                                 //System.out.print("\n logica: X00"); 
                                             }else
                             //si hi ha classe no hi havia forat i sí venim d'X --> venim d'X i Sí comptem                   
@@ -274,6 +278,7 @@ public class Professor {
                                                    this.foratiniciat = false;
                                                    this.venimdix = true;
                                                    this.comptapermanencies++;
+                                                   this.terminals[k][1]= m; //última hora terminal
                                                    //System.out.print("\n logica: X01"); 
                                                 }else
                             //si hi ha classe i hi havia forat i no venim d'X --> no comptem forat, venim d'X, incrementem comptador globali this.temporal a 0                       
@@ -283,6 +288,7 @@ public class Professor {
                                                         this.comptapermanencies++;
                                                         this.comptapermanencies = this.comptapermanencies + this.temporal;
                                                         this.temporal = 0;
+                                                        this.terminals[k][1]= m; //última hora terminal
                                                         //System.out.print("\n logica: X10"); 
                                                     }else{
                             //si hi ha classe i hi ha havia forat i venim d'X --> cas extrany i no fem res                           
@@ -316,5 +322,17 @@ public class Professor {
                     System.out.println("\n Clau: " + key1 + " -> Valor(profe:dia:hora): " + horarecollit);
                     
                 }
+        }
+        
+        public void imprimeix_hores_terminals() {
+            System.out.print(" \n ================ " + this.codi);
+                    for (int m = 0; m < 2; m++) {
+                        System.out.print("\n");
+                        for (int k = 0; k < DIES; k++) {
+                            System.out.print(this.terminals[k][m]);
+                        }
+                    }
+            System.out.print(" \n ================ \n");
+            
         }
 }

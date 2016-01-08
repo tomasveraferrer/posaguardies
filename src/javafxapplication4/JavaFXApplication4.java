@@ -7,6 +7,7 @@ package javafxapplication4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,7 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import static javafxapplication4.JavaFXApplication4.matriuGuardies;
+//import static javafxapplication4.JavaFXApplication4.matriuGuardies;
 
 /**
  *
@@ -46,20 +47,26 @@ public class JavaFXApplication4 extends Application {
         "E4A", "E4B", "E4C", "E4D",
         "B1A", "B1B", "B2A", "B2B",
         "CFA", "CFB", "CFC"};
+    
+    /*
     public static String profes[] = {"AN1", "AN2", "AN3", "AN4",
         "ES1", "ES2", "ES3", "ES4",
         "CA1", "CA2", "CA3", "CA4",
         "MA1", "MA2", "MA3", "MA4",
         "TE1", "TE2", "TE3", "TE4",
         "HI1", "HI2", "HI3", "HI4"};
-    
+    */
              
     //creo la matriu de guàrdies
     public static int matriuGuardies[][][] = new int[DIES][HORA][];
-        
-       
-    public char SuperMatriu[][][] = new char[grups.length][DIES][HORA];
-    public static char SuperMatriuProfes[][][] = new char[profes.length][DIES][HORA];// variable estàtica per poder accedir des de fora de la classe
+    // creo el hashmap per a recollir els profes    
+    static Map<String, String> llista_profes = new HashMap<>();
+    
+    public static String profes[];
+
+    
+    public char SuperMatriu[][][];
+    public static char SuperMatriuProfes[][][];// variable estàtica per poder accedir des de fora de la classe
 
     // Funció per treure els símbols "
     public String sensecometes(String ambcometes) {
@@ -73,13 +80,10 @@ public class JavaFXApplication4 extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
-        Button btn = new Button();
-        btn.setText("Importo CSV");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
+        
+        //*************************************************************************
+                System.out.println("Botó 3 premut: ");
+                
                 System.out.println("Començo a importar");
 
                 //Get scanner instance
@@ -94,19 +98,95 @@ public class JavaFXApplication4 extends Application {
                     //I am just printing them
                     while (scanner.hasNext()) {
                         valor = scanner.next();
+                        if (i == 2 || i%8 == 2 ){
+                            System.out.print("\n(" + i +") ");
+                            System.out.print(sensecometes(valor) + " ");
+                            String dada1 = Integer.toString(i);
+                            if (!valor.equals("") && valor != null){
+                                llista_profes.put(sensecometes(valor), sensecometes(valor));
+                            }
+                        }
+                        //    matriu[i] = sensecometes(valor);
+                        i = i + 1;
+                    }
+
+                    //Do not forget to close the scanner 
+                    scanner.close();
+                    
+                    System.out.println("\n Imprimim la mtriu profes amb els valors entrats ");
+                    // Imprimimos el Map con un Iterador
+                    
+                    
+                    //convertim el hash a array
+                    profes= new String[llista_profes.size()];
+                    
+                    profes = new String[llista_profes.size()];
+                    
+                    Object[] keys = llista_profes.keySet().toArray();
+
+                         for (int row = 0; row < llista_profes.size(); row++) {
+                                profes[row] = (String)keys[row];
+                         }
+                    //Ordena el array
+                    Arrays.sort(profes);
+                    
+                    for (int j = 0; j < profes.length; j++) {
+
+                        System.out.print("\n veiem profes::: " + profes[j]);
+                    
+                    }
+                         
+                    //imprimim el hash     
+                    System.out.println("\n Imprimim el hashmap amb la clau");
+                    Iterator it = llista_profes.keySet().iterator();
+                    
+                    while (it.hasNext()) {
+                        String key = it.next().toString();
+                        valor = llista_profes.get(key);
+                        //Map.Entry e = (Map.Entry)it.next();
+                        
+                        System.out.println(" -> Clau: " + valor );
+ 
+                    }
+                   
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(JavaFXApplication4.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //**********************************************************************************
+        
+                i = 0;
+                
+                
+                System.out.println("Començo a importar");
+                System.out.println("Matriu profes.length: " + profes.length);
+                System.out.println("Matriu grups.length: " + grups.length);
+
+                //Get scanner instance
+                Scanner scann;
+                try {
+                    //    compte amb la codificació, millor UTF-8
+                    scann = new Scanner(new File("dades/horaris.csv"));
+
+                    //Set the delimiter used in file
+                    scann.useDelimiter(";");
+                //Get all tokens and store them in some data structure
+                    //I am just printing them
+                    while (scann.hasNext()) {
+                        valor = scann.next();
                 //    System.out.print("\n(" + i +") ");
                         //    System.out.print(valor + " ");
                         matriu[i] = sensecometes(valor);
                         i = i + 1;
                     }
 
-                    //Do not forget to close the scanner 
-                    scanner.close();
+                    //Do not forget to close the scann 
+                    scann.close();
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(JavaFXApplication4.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 // Poblem la SuperMatriu amb '-' i posem 'P' a l'hora del pati
+                SuperMatriu = new char[grups.length][DIES][HORA];
                 for (int j = 0; j < grups.length; j++) {
 
                     for (int k = 0; k < DIES; k++) {
@@ -122,6 +202,7 @@ public class JavaFXApplication4 extends Application {
                 }
 
                 // Poblem la SuperMatriuProfes amb '-'
+                SuperMatriuProfes= new char[profes.length][DIES][HORA];
                 for (int j = 0; j < profes.length; j++) {
 
                     for (int k = 0; k < DIES; k++) {
@@ -239,22 +320,10 @@ public class JavaFXApplication4 extends Application {
                 matriuGuardies[2][3] = new int[6];
                 matriuGuardies[3][3] = new int[6];
                 matriuGuardies[4][3] = new int[6];
+        
+        //************************************************************************************************        
                 
-            }
-        });
-
-        Button btn2 = new Button();
-        btn2.setText("creo horari");
-
-        FlowPane root = new FlowPane(10, 10);
-
-        root.getChildren().addAll(btn, btn2);
-        root.setAlignment(Pos.CENTER);
-
-        btn2.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
+                i = 0;
                 //creo un hashmap o alguna cosa similar
                 Map<String, Professor> map = new HashMap<>();
                 //creo profes
@@ -267,6 +336,7 @@ public class JavaFXApplication4 extends Application {
                     profe1.calculaforats();
                     profe1.ompleforats();
                     profe1.imprimeix_llista_forats();
+                    profe1.imprimeix_hores_terminals();
                     map.put(profes[j], profe1);
 
                 }
@@ -282,18 +352,51 @@ public class JavaFXApplication4 extends Application {
                     System.out.println("Forats: " + proferecollit.comptaforats);
                     System.out.println("Permanències: " + proferecollit.calculapermanencies());
                     proferecollit.imprimeix_horari();
+                    proferecollit.imprimeix_hores_terminals();
                 }
                 
-            
+        //********************************************************************************        
                 
-                /* 
-                 Professor proferecollit = map.get("TE1");
-                 int val = proferecollit.calculaforats();
-                 System.out.println("Professor: TE1  " + val);
-                 */
+        Button btn = new Button();
+        btn.setText("Importo CSV");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                
+                //************************************************************************
             }
         });
 
+        Button btn2 = new Button();
+        btn2.setText("creo horari");
+        
+        Button btn3 = new Button();
+        btn3.setText("hashmap: entro dades primer de tot");
+
+        FlowPane root = new FlowPane(20, 20);
+
+        root.getChildren().addAll(btn, btn2, btn3);
+        root.setAlignment(Pos.CENTER);
+
+        btn2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+               
+                //****************************************************************************
+            }
+        });
+        
+        btn3.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                
+                //**********************************************************************************
+            }
+        });        
+                
         Scene scene = new Scene(root, 300, 250);
 
         primaryStage.setTitle("Importo horaris a veure què...");
